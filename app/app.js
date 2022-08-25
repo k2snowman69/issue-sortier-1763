@@ -1,7 +1,7 @@
 function print() {
   const data = {
-    b: "b",
     a: "a",
+    b: "b",
     c: "c",
   };
   console.log(data);
