@@ -7,7 +7,6 @@ const count_cssFiles = 1;
 describe.each`
   root
   ${"app"}
-  ${"/app"}
   ${"./app"}
 `('prefix being "$root"', ({ root }) => {
   describe("positive", () => {
@@ -48,8 +47,22 @@ describe.each`
       expect(files).toHaveLength(count_allFiles - count_cssFiles);
     });
 
-    it("pulls non-css or non-js files", () => {
+    it("pulls non-css or non-js files - separate", () => {
       const files = globbySync([`!${root}/**/*.json`, `!${root}/**/*.css`]);
+      expect(files).toHaveLength(
+        count_allFiles - count_cssFiles - count_jsonFiles
+      );
+    });
+
+    it("pulls non-css or non-js files - parenthesis", () => {
+      const files = globbySync(`!${root}/**/(*.json|*.css)`);
+      expect(files).toHaveLength(
+        count_allFiles - count_cssFiles - count_jsonFiles
+      );
+    });
+
+    it("pulls non-css or non-js files - curly", () => {
+      const files = globbySync(`!${root}/**/*.{json,css}`);
       expect(files).toHaveLength(
         count_allFiles - count_cssFiles - count_jsonFiles
       );
@@ -67,8 +80,22 @@ describe.each`
       expect(files).toHaveLength(count_allFiles - count_cssFiles);
     });
 
-    it("pulls non-css or non-js files", () => {
+    it("pulls non-css or non-js files - separate", () => {
       const files = globbySync([`${root}/**/!*.json`, `${root}/**/!*.css`]);
+      expect(files).toHaveLength(
+        count_allFiles - count_cssFiles - count_jsonFiles
+      );
+    });
+
+    it("pulls non-css or non-js files - parenthesis", () => {
+      const files = globbySync(`${root}/**/!(*.json|*.css)`);
+      expect(files).toHaveLength(
+        count_allFiles - count_cssFiles - count_jsonFiles
+      );
+    });
+
+    it("pulls non-css or non-js files - curly", () => {
+      const files = globbySync(`${root}/**/!*.{json,css}`);
       expect(files).toHaveLength(
         count_allFiles - count_cssFiles - count_jsonFiles
       );
